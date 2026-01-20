@@ -1,20 +1,19 @@
 #include "NPC.hpp"
 
-
-#include "dependencies/glm-1.0.2/glm/glm.hpp"
-
-/**
- * @brief The constructor for the NPC class.
- * @param pos The starting 3D position of the NPC in the world.
- * @param texPath The file path to the texture this NPC will use.
- */
-NPC::NPC(glm::vec3 pos, const std::string& texPath)
-
-
-    : GameObject(pos, texPath)
+// Constructor implementation
+NPC::NPC(glm::vec3 pos, const std::string& modelPath, const std::string& iconPath)
+    : GameObject(pos, modelPath, iconPath)
 {
-    
-    
-    
-    scale = glm::vec3(4.0f, 1.0f, 4.0f);
+    // Set a default scale. Adjust this (e.g., 0.05f, 0.1f, 1.0f) 
+    // depending on how big your downloaded OBJ file is.
+    scale = glm::vec3(0.05f);
+}
+
+// Update implementation
+void NPC::update(float deltaTime, const Camera& camera) {
+    // Currently, NPCs do nothing (idle).
+    // If you want them to rotate or walk, put that logic here later.
+
+    // Example: Make NPC slowly rotate
+    // rotation.y += 10.0f * deltaTime;
 }

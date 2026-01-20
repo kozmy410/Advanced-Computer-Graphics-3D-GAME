@@ -4,21 +4,18 @@
 
 class Player : public GameObject {
 public:
-    Player(glm::vec3 pos, const std::string& texPath);
+    Player(glm::vec3 pos, const std::string& modelPath, const std::string& iconPath);
 
-    void update(float deltaTime) override;
+    // CHANGED: Update signature to match GameObject
+    void update(float deltaTime, const Camera& camera) override;
 
-    
+    // Getters/Setters
     void setName(const std::string& name) { m_playerName = name; }
     const std::string& getName() const { return m_playerName; }
-
     void addScore(int value) { m_score += value; }
-    void addXP(int value) { m_xp += value; }
-
     int getScore() const { return m_score; }
+    void addXP(int value) { m_xp += value; }
     int getXP() const { return m_xp; }
-
-    
     bool isInTriggerZone() const { return m_isInTriggerZone; }
     void setInTriggerZone(bool value) { m_isInTriggerZone = value; }
 

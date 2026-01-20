@@ -80,6 +80,14 @@ void Shader::setMat4(const std::string& name, const glm::mat4& mat) {
     }
 }
 
+void Shader::setBool(const std::string& name, bool value) {
+    glUniform1i(getUniformLocation(name), (int)value);
+}
+
+void Shader::setInt(const std::string& name, int value) {
+    glUniform1i(getUniformLocation(name), value);
+}
+
 
 int Shader::getUniformLocation(const std::string& name) {
     
