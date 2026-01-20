@@ -1,0 +1,7 @@
+# Ignore build and cache folders
+.vs/
+x64/
+*/.vs/
+*/x64/
+debug/
+release/

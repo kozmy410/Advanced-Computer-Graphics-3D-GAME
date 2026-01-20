@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="ACG_Test3/ACG_Test3.vcxproj" Id="dde15336-eabe-4a73-8215-9d024b249ee1" />
+</Solution>
