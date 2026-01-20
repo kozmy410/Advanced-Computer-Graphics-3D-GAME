@@ -12,5 +12,5 @@ public:
 private:
     unsigned int m_rendererID;
     std::string m_filePath;
-    int m_width, m_height, m_bpp; // Bits per pixel
+    int m_width, m_height, m_bpp; 
 };

@@ -10,7 +10,7 @@
 
 
 
-// A simple Linear Interpolation (Lerp) helper function for smooth animation.
+
 float lerp(float a, float b, float t) {
     return a + t * (b - a);
 }
@@ -20,10 +20,10 @@ Minimap::Minimap(int screenWidth, int screenHeight)
     : m_screenWidth(screenWidth), m_screenHeight(screenHeight),
     m_shader(nullptr), m_isMaximized(false) {
 
-    // --- SET INITIAL ZOOM STATE ---
+    
     m_currentZoom = 20.0f;
     m_targetZoom = 20.0f;
-    m_zoomSpeed = 4.0f; // Higher is faster
+    m_zoomSpeed = 4.0f; 
 
     m_shader = new Shader("shaders/minimap.vert", "shaders/minimap.frag");
     m_mapTexture = new Texture("resources/map.bmp");
@@ -46,7 +46,7 @@ Minimap::~Minimap() {
     glDeleteBuffers(1, &m_mapIbo);
 }
 
-// This is a new public method for external control
+
 void Minimap::setTargetZoom(float target) {
     m_targetZoom = target;
 }
@@ -113,15 +113,15 @@ void Minimap::setupMapGeometry() {
 
 
 void Minimap::draw(const Player* player, const std::vector<GameObject*>& gameObjects, float deltaTime) {
-    // 1. Set OpenGL state for 2D UI rendering
+    
     glDisable(GL_DEPTH_TEST);
 
-    // 2. Set up the viewport and calculate its aspect ratio
+    
     float viewportWidth, viewportHeight;
     if (m_isMaximized) {
-        viewportWidth = m_screenWidth;
-        viewportHeight = m_screenHeight;
-        glViewport(0, 0, static_cast<int>(viewportWidth), static_cast<int>(viewportHeight));
+        viewportWidth = static_cast<float>(m_screenWidth);
+        viewportHeight = static_cast<float>(m_screenHeight);
+        glViewport(0, 0, m_screenWidth, m_screenHeight);
     }
     else {
         int minimapSize = 200;
@@ -134,34 +134,29 @@ void Minimap::draw(const Player* player, const std::vector<GameObject*>& gameObj
     }
     float aspectRatio = viewportWidth / viewportHeight;
 
-    // 3. Clear the minimap background
+    
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // 4. Prepare the shader and common uniforms
+    
     m_shader->use();
     glUniform1i(glGetUniformLocation(m_shader->ID, "u_Texture"), 0);
 
-    // 5. --- SMOOTH ZOOM AND CAMERA LOGIC ---
-
-    // Animate the current zoom level towards the target zoom set by main.cpp
+    
     m_currentZoom = lerp(m_currentZoom, m_targetZoom, m_zoomSpeed * deltaTime);
 
-    // All rendering will use this single, animated zoom value.
-    float zoomForRender = m_currentZoom;
-
-    // Calculate the dimensions of our camera's view in world space
+    
     float halfViewWidth, halfViewHeight;
-    if (aspectRatio >= 1.0f) { // Wider than tall
-        halfViewHeight = zoomForRender;
-        halfViewWidth = zoomForRender * aspectRatio;
+    if (aspectRatio >= 1.0f) {
+        halfViewHeight = m_currentZoom;
+        halfViewWidth = m_currentZoom * aspectRatio;
     }
-    else { // Taller than wide
-        halfViewWidth = zoomForRender;
-        halfViewHeight = zoomForRender / aspectRatio;
+    else {
+        halfViewWidth = m_currentZoom;
+        halfViewHeight = m_currentZoom / aspectRatio;
     }
 
-    // Clamp the camera position so it never shows area outside the map
+    
     glm::vec3 cameraPos = player->position;
     float minCamX = MAP_BOUNDS_MIN + halfViewWidth;
     float maxCamX = MAP_BOUNDS_MAX - halfViewWidth;
@@ -170,7 +165,6 @@ void Minimap::draw(const Player* player, const std::vector<GameObject*>& gameObj
     cameraPos.x = glm::clamp(cameraPos.x, minCamX, maxCamX);
     cameraPos.z = glm::clamp(cameraPos.z, minCamZ, maxCamZ);
 
-    // Create the final view and projection matrices
     glm::mat4 view = glm::lookAt(
         glm::vec3(cameraPos.x, 50.0f, cameraPos.z),
         glm::vec3(cameraPos.x, 0.0f, cameraPos.z),
@@ -181,35 +175,50 @@ void Minimap::draw(const Player* player, const std::vector<GameObject*>& gameObj
     m_shader->setMat4("view", view);
     m_shader->setMat4("projection", projection);
 
-    // 6. --- DRAW PASS 1: THE MAP BACKGROUND ---
+    
     m_mapTexture->bind(0);
-    m_shader->setVec3("objectColor", glm::vec3(1.0f)); // White tint (no color change)
-    m_shader->setMat4("model", glm::mat4(1.0f)); // Map is already world-sized
+    m_shader->setVec3("objectColor", glm::vec3(1.0f));
+    m_shader->setMat4("model", glm::mat4(1.0f));
     glBindVertexArray(m_mapVao);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
-    // 7. --- DRAW PASS 2: THE ICONS ---
+    
     glBindVertexArray(m_vao);
+
+    
+    {
+        Texture* playerTex = getTexture(player->texturePath);
+        if (playerTex) playerTex->bind(0);
+
+        
+        m_shader->setVec3("objectColor", glm::vec3(1.0f));
+
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::translate(model, player->position);
+        model = glm::scale(model, player->scale);
+
+        m_shader->setMat4("model", model);
+        glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, nullptr);
+    }
+    
+
+    
     for (const auto& obj : gameObjects) {
         Texture* objectTexture = getTexture(obj->texturePath);
-        if (objectTexture) {
-            objectTexture->bind(0);
-        }
+        if (objectTexture) objectTexture->bind(0);
 
-        m_shader->setVec3("objectColor", glm::vec3(1.0f)); // White tint for icons
+        m_shader->setVec3("objectColor", glm::vec3(1.0f));
 
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::translate(model, obj->position);
-        model = glm::scale(model, obj->scale); // Apply the object's unique scale
+        model = glm::scale(model, obj->scale);
 
         m_shader->setMat4("model", model);
         glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, nullptr);
     }
 
-    // 8. --- RESET OPENGL STATE ---
-    if (!m_isMaximized) {
-        glDisable(GL_SCISSOR_TEST);
-    }
-    glViewport(0, 0, m_screenWidth, m_screenHeight); // Reset viewport to full screen
-    glEnable(GL_DEPTH_TEST); // Re-enable depth test for the 3D scene
+    
+    if (!m_isMaximized) glDisable(GL_SCISSOR_TEST);
+    glViewport(0, 0, m_screenWidth, m_screenHeight);
+    glEnable(GL_DEPTH_TEST);
 }

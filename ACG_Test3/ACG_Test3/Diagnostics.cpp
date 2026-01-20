@@ -1,14 +1,14 @@
 #include "Diagnostics.hpp"
 
-// The :: operator is used to define a function that belongs to a class.
+
 void Diagnostics::printOpenGLInfo() {
     std::cout << "----------------------------------------------------------------\n";
     std::cout << "               OpenGL Renderer Information\n";
     std::cout << "----------------------------------------------------------------\n";
 
-    // --- Basic Information (glGetString) ---
-    // The reinterpret_cast is used to convert the GLubyte* from glGetString
-    // to a char* that std::cout can print as a string.
+    
+    
+    
     std::cout << "Vendor:   " << reinterpret_cast<const char*>(glGetString(GL_VENDOR)) << std::endl;
     std::cout << "Renderer: " << reinterpret_cast<const char*>(glGetString(GL_RENDERER)) << std::endl;
     std::cout << "Version:  " << reinterpret_cast<const char*>(glGetString(GL_VERSION)) << std::endl;
@@ -18,7 +18,7 @@ void Diagnostics::printOpenGLInfo() {
     std::cout << "                 OpenGL Implementation Limits\n";
     std::cout << "----------------------------------------------------------------\n";
 
-    // --- Querying Integer Limits (glGetIntegerv) ---
+    
     GLint queryResult;
 
     glGetIntegerv(GL_MAX_TEXTURE_SIZE, &queryResult);
