@@ -1,12 +1,14 @@
 #include <iostream>
 #include "Game.hpp"
 
+
+//should be obvious: this is where the program starts running
 int main() {
     try {
-        
+
         Game game("Minimap Project", 800, 600);
 
-        
+
         game.run();
     }
     catch (const std::exception& e) {
@@ -16,3 +18,4 @@ int main() {
 
     return 0;
 }
+

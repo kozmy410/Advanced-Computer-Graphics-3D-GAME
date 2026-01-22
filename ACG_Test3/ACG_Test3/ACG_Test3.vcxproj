@@ -133,17 +133,24 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_draw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_tables.cpp" />
+    <ClCompile Include="dependencies\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Diagnostics.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Minimap.cpp" />
     <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Primitives.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,29 +158,45 @@
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="CollisionManager.hpp" />
     <ClInclude Include="CollisionZone.hpp" />
+    <ClInclude Include="dependencies\imgui\imconfig.h" />
+    <ClInclude Include="dependencies\imgui\imgui.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_glfw.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="dependencies\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="dependencies\imgui\imgui_internal.h" />
+    <ClInclude Include="dependencies\imgui\imstb_rectpack.h" />
+    <ClInclude Include="dependencies\imgui\imstb_textedit.h" />
+    <ClInclude Include="dependencies\imgui\imstb_truetype.h" />
     <ClInclude Include="Diagnostics.hpp" />
     <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameConstants.hpp" />
     <ClInclude Include="GameObject.hpp" />
     <ClInclude Include="InputManager.hpp" />
+    <ClInclude Include="Inventory.hpp" />
     <ClInclude Include="Mesh.hpp" />
     <ClInclude Include="Minimap.hpp" />
     <ClInclude Include="Model.hpp" />
     <ClInclude Include="NPC.hpp" />
+    <ClInclude Include="ObjectFactory.hpp" />
     <ClInclude Include="Player.hpp" />
     <ClInclude Include="Primitives.hpp" />
     <ClInclude Include="Shader.hpp" />
+    <ClInclude Include="Skybox.hpp" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Texture.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.vert" />
     <None Include="packages.config" />
-    <None Include="shaders\debug.frag" />
-    <None Include="shaders\debug.vert" />
+    <None Include="shaders\frag.glsl" />
     <None Include="shaders\minimap.frag" />
     <None Include="shaders\minimap.vert" />
+    <None Include="shaders\sun.frag" />
+    <None Include="shaders\sun.vert" />
+    <None Include="shaders\vert.glsl" />
+    <None Include="shaders\water.frag" />
+    <None Include="shaders\water.vert" />
+    <None Include="skybox.frag" />
+    <None Include="skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="resources\map.bmp" />

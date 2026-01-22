@@ -1,0 +1,1 @@
+rename cat4.obj to cat.obj to use less memory and make it work 

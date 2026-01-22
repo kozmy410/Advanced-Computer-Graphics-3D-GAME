@@ -5,7 +5,7 @@
 #include <map>
 #include "dependencies/glm-1.0.2/glm/glm.hpp"
 
-// Forward declarations to reduce compile time dependencies
+// telling the compiler these classes exist so we don't have to include the heavy headers here
 class Shader;
 class GameObject;
 class Player;
@@ -13,42 +13,55 @@ class Texture;
 
 class Minimap {
 public:
+    // constructor: needs screen size to know where to draw
     Minimap(int screenWidth, int screenHeight);
+    // destructor: cleaning up memory
     ~Minimap();
 
-    // The main draw function
+    // the main function that renders the map and icons every frame
     void draw(const Player* player, const std::vector<GameObject*>& gameObjects, float deltaTime);
 
-    // Interaction methods
+    // switching between the small corner map and the big full-screen map
     void toggleMaximized();
+
+    // telling the camera how close it should zoom in (smoothly)
     void setTargetZoom(float target);
+
+    // called when the player resizes the game window so the map stays proportional
     void onWindowResize(int newWidth, int newHeight);
 
+    // checking if we are currently looking at the big map
     bool isMaximized() const { return m_isMaximized; }
 
 private:
-    // Rendering Resources
+    // the shader program used to draw 2d elements
     Shader* m_shader;
     Texture* m_mapTexture;
 
-    // Geometry Data
-    unsigned int m_vao, m_vbo, m_ibo, m_indexCount; // For Icons
-    unsigned int m_mapVao, m_mapVbo, m_mapIbo;      // For the Map Background
+    // opengl buffers for the icons (points/quads)
+    unsigned int m_vao, m_vbo, m_ibo, m_indexCount;
+    // opengl buffers for the map background itself
+    unsigned int m_mapVao, m_mapVbo, m_mapIbo;
 
-    // State
+    // remembering screen dimensions
     int m_screenWidth, m_screenHeight;
+    // state flag for the big map mode
     bool m_isMaximized;
 
-    // Zoom Logic
+    // variables to handle the smooth zooming effect
     float m_currentZoom;
     float m_targetZoom;
     float m_zoomSpeed;
 
-    // Texture Cache (avoids reloading "cat.png" 100 times)
+    // keeping loaded textures here so we don't load them from disk 60 times a second
     std::map<std::string, Texture*> m_textureCache;
 
-    // Helpers
+    // helper to load an icon or get it from the cache if it's already there
     Texture* getTexture(const std::string& path);
+
+    // preparing the shape (quad) for icons
     void setupIconGeometry();
+    // preparing the shape for the map border/background
     void setupMapGeometry();
+
 };

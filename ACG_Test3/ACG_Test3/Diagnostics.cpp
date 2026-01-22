@@ -44,4 +44,5 @@ void Diagnostics::printOpenGLInfo() {
     glGetIntegerv(GL_NUM_EXTENSIONS, &numExtensions);
     std::cout << "Number of Supported Extensions: " << numExtensions << std::endl;
     std::cout << "----------------------------------------------------------------\n";
+
 }

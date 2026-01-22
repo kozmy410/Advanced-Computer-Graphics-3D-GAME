@@ -1,9 +1,5 @@
 #pragma once
-
-
 #include "dependencies/glew-2.2.0/include/GL/glew.h"
-
-
 #include <iostream>
 
 class Diagnostics {
@@ -14,9 +10,6 @@ public:
      *        This is very useful for diagnostics.
      */
     static void printOpenGLInfo();
-
 private:
-    
-    
     Diagnostics() {}
 };
