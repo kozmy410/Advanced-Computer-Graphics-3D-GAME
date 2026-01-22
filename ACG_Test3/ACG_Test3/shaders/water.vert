@@ -54,7 +54,7 @@ void main() {
 
     
 
-[Image of wave interference patterns]
+//[Image of wave interference patterns]
 
 
     // --- ANALYTICAL NORMALS ---
